@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Makoa~Wave Widget Demo</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <p class="eyebrow">Makoa~Wave</p>
+        <h1>Multilingual chatbot widget</h1>
+        <p>
+          This page serves the embeddable widget. Use the script below on any
+          site and point <code>apiBase</code> to this deployment.
+        </p>
+        <pre><code>&lt;script&gt;
+window.MAKOA_WAVE_WIDGET_CONFIG = {
+  apiBase: "https://your-app.example.com",
+  title: "Chat with Makoa~Wave",
+  placeholder: "Type your message...",
+  context: "Business name: Makoa~Wave"
+};
+&lt;/script&gt;
+&lt;script src="https://your-app.example.com/static/widget.js" defer&gt;&lt;/script&gt;</code></pre>
+      </section>
+    </main>
+
+    <script>
+      window.MAKOA_WAVE_WIDGET_CONFIG = {
+        apiBase: window.location.origin,
+        title: "Chat with Makoa~Wave",
+        placeholder: "Type your message...",
+        context: "Business name: Makoa~Wave",
+      };
+    </script>
+    <script src="/static/widget.js" defer></script>
+  </body>
+</html>
