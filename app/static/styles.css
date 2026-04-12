@@ -2,27 +2,39 @@
   box-sizing: border-box;
 }
 
+:root {
+  --ink: #0f2e2f;
+  --teal: #0b7c77;
+  --seafoam: #c8f2df;
+  --sand: #f6eedf;
+  --sunset: #ff8f5a;
+  --panel: rgba(255, 253, 248, 0.88);
+  --line: rgba(15, 46, 47, 0.12);
+}
+
 body {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(160deg, #f2f7f5 0%, #d9efe8 100%);
-  color: #12312f;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 143, 90, 0.28), transparent 28%),
+    radial-gradient(circle at top right, rgba(11, 124, 119, 0.18), transparent 26%),
+    linear-gradient(160deg, #fff7ec 0%, #eef7f4 52%, #d8efe9 100%);
+  color: var(--ink);
 }
 
 .page {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 72px;
 }
 
 .card {
-  width: min(720px, 100%);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(18, 49, 47, 0.12);
-  border-radius: 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 28px;
   padding: 32px;
-  box-shadow: 0 24px 80px rgba(18, 49, 47, 0.12);
+  box-shadow: 0 26px 80px rgba(15, 46, 47, 0.11);
 }
 
 .eyebrow {
@@ -30,26 +42,202 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 12px;
-  color: #0d7c6d;
+  color: var(--teal);
+  font-weight: 700;
 }
 
 h1 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0 0 16px;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  max-width: 11ch;
 }
 
-p {
-  line-height: 1.6;
+h2,
+h3 {
+  margin: 0 0 14px;
+}
+
+p,
+li,
+span,
+input,
+textarea,
+button {
+  line-height: 1.5;
+}
+
+.lede {
+  max-width: 58ch;
+  font-size: 1.05rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.hero-copy {
+  padding: 8px 0;
+}
+
+.snapshot {
+  display: flex;
+  align-items: stretch;
+}
+
+.snapshot-card {
+  width: 100%;
+  padding: 24px;
+  border-radius: 28px;
+  background: linear-gradient(150deg, rgba(15, 46, 47, 0.94), rgba(11, 124, 119, 0.88));
+  color: #eefdf7;
+  box-shadow: 0 26px 80px rgba(11, 124, 119, 0.2);
+}
+
+.snapshot-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(238, 253, 247, 0.72);
+}
+
+.snapshot-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.pill-row,
+.actions,
+.prompt-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pill,
+.prompt-chip,
+.primary-btn {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(15, 46, 47, 0.1);
+}
+
+.pill.is-active {
+  background: var(--ink);
+  color: white;
+}
+
+.actions {
+  margin-top: 18px;
+  align-items: center;
+}
+
+.primary-btn {
+  padding: 14px 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--sunset), #ffb070);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 16px 40px rgba(255, 143, 90, 0.28);
+}
+
+.health-note {
+  font-size: 0.95rem;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+  gap: 24px;
+}
+
+.field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.field span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(15, 46, 47, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 14px 16px;
+  font: inherit;
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 240px;
+  resize: vertical;
+}
+
+.prompt-chip {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(200, 242, 223, 0.8), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(11, 124, 119, 0.14);
+  text-align: left;
+}
+
+.prompt-card {
+  display: grid;
+  gap: 18px;
 }
 
 pre {
   overflow-x: auto;
   padding: 16px;
   border-radius: 16px;
-  background: #0f2322;
+  background: #102829;
   color: #ddf2eb;
 }
 
 code {
   font-family: "SFMono-Regular", Consolas, monospace;
+}
+
+@media (max-width: 900px) {
+  .hero,
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(100% - 20px, 1180px);
+    padding-top: 20px;
+  }
+
+  .card,
+  .snapshot-card {
+    padding: 22px;
+    border-radius: 22px;
+  }
 }

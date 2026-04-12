@@ -3,8 +3,8 @@
   const apiBase = (config.apiBase || window.location.origin).replace(/\/$/, "");
   const title = config.title || "Chat with Makoa~Wave";
   const placeholder = config.placeholder || "Type your message...";
-  const context = config.context || "";
-  const launcherLabel = config.launcherLabel || "Open chat";
+  let context = config.context || "";
+  let launcherLabel = config.launcherLabel || "Open chat";
 
   const style = document.createElement("style");
   style.textContent = `
@@ -168,14 +168,21 @@
   }
 
   launcher.addEventListener("click", function () {
-    panel.classList.toggle("open");
-    const isOpen = panel.classList.contains("open");
+    const isOpen = !panel.classList.contains("open");
+    panel.classList.toggle("open", isOpen);
     launcher.setAttribute("aria-expanded", String(isOpen));
     panel.setAttribute("aria-hidden", String(!isOpen));
     if (isOpen) {
       input.focus();
     }
   });
+
+  function openPanel() {
+    panel.classList.add("open");
+    launcher.setAttribute("aria-expanded", "true");
+    panel.setAttribute("aria-hidden", "false");
+    input.focus();
+  }
 
   function setPendingState(isPending) {
     input.disabled = isPending;
@@ -221,4 +228,29 @@
   });
 
   addMessage("Aloha. Ask me anything and I’ll reply in your language. What can I help with?", "assistant");
+
+  window.MakoaWaveWidget = {
+    open: openPanel,
+    setContext(nextContext) {
+      context = nextContext || "";
+    },
+    setTitle(nextTitle) {
+      header.textContent = nextTitle || title;
+      panel.setAttribute("aria-label", header.textContent);
+    },
+    setPlaceholder(nextPlaceholder) {
+      input.placeholder = nextPlaceholder || placeholder;
+    },
+    setLauncherLabel(nextLabel) {
+      launcherLabel = nextLabel || launcherLabel;
+      launcher.setAttribute("aria-label", launcherLabel);
+    },
+    pushAssistantMessage(text) {
+      addMessage(text, "assistant");
+    },
+    fillInput(text) {
+      input.value = text || "";
+      input.focus();
+    }
+  };
 })();

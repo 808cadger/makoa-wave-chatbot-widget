@@ -3,19 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Makoa~Wave Widget Demo</title>
+    <title>Makoa~Wave MVP Demo</title>
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
     <main class="page">
-      <section class="card">
-        <p class="eyebrow">Makoa~Wave</p>
-        <h1>Multilingual chatbot widget</h1>
-        <p>
-          This page serves the embeddable widget. Use the script below on any
-          site and point <code>apiBase</code> to this deployment.
-        </p>
-        <pre><code>&lt;script&gt;
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Makoa~Wave MVP</p>
+          <h1>Multilingual customer support that feels demo-ready, not half-built.</h1>
+          <p class="lede">
+            This deploys as a FastAPI app with an embeddable chat widget. The demo below lets you switch verticals,
+            change business context live, and test multilingual booking flows from one page.
+          </p>
+          <div class="pill-row">
+            <button class="pill is-active" data-preset="tours" type="button">Tours</button>
+            <button class="pill" data-preset="salon" type="button">Spa</button>
+            <button class="pill" data-preset="retail" type="button">Retail</button>
+          </div>
+          <div class="actions">
+            <button class="primary-btn" id="open-widget" type="button">Open live widget</button>
+            <span class="health-note"><code>GET /health</code> checks runtime status.</span>
+          </div>
+        </div>
+        <div class="snapshot">
+          <div class="snapshot-card">
+            <span class="snapshot-label">What this MVP proves</span>
+            <ul>
+              <li>Language-aware replies for customer inquiries</li>
+              <li>Embeddable widget for any website or landing page</li>
+              <li>Business-context injection without retraining</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-grid">
+        <article class="card editor-card">
+          <h2>Live business context</h2>
+          <label class="field">
+            <span>Widget title</span>
+            <input id="title-field" type="text" value="Book with Makoa~Wave" />
+          </label>
+          <label class="field">
+            <span>Input placeholder</span>
+            <input id="placeholder-field" type="text" value="Ask about tours, pricing, or availability..." />
+          </label>
+          <label class="field">
+            <span>Context injected into the model</span>
+            <textarea id="context-field" rows="10"></textarea>
+          </label>
+        </article>
+
+        <article class="card prompt-card">
+          <h2>Fast demo prompts</h2>
+          <div class="prompt-list">
+            <button class="prompt-chip" data-fill="ツアー予約したいです。明日の空きはありますか？" type="button">Japanese booking</button>
+            <button class="prompt-chip" data-fill="¿Tienen disponibilidad mañana para dos personas?" type="button">Spanish availability</button>
+            <button class="prompt-chip" data-fill="How much is the sunset cruise and what is included?" type="button">English pricing</button>
+            <button class="prompt-chip" data-fill="我想問一下今天還可以預約嗎？" type="button">Chinese inquiry</button>
+          </div>
+          <h3>Embed snippet</h3>
+          <pre><code>&lt;script&gt;
 window.MAKOA_WAVE_WIDGET_CONFIG = {
   apiBase: "https://your-app.example.com",
   title: "Chat with Makoa~Wave",
@@ -25,19 +74,20 @@ window.MAKOA_WAVE_WIDGET_CONFIG = {
 };
 &lt;/script&gt;
 &lt;script src="https://your-app.example.com/static/widget.js" defer&gt;&lt;/script&gt;</code></pre>
-        <p><code>GET /health</code> returns a simple deploy health check.</p>
+        </article>
       </section>
     </main>
 
     <script>
       window.MAKOA_WAVE_WIDGET_CONFIG = {
         apiBase: window.location.origin,
-        title: "Chat with Makoa~Wave",
-        placeholder: "Type your message...",
+        title: "Book with Makoa~Wave",
+        placeholder: "Ask about tours, pricing, or availability...",
         context: "Business name: Makoa~Wave",
         launcherLabel: "Open multilingual support chat",
       };
     </script>
     <script src="/static/widget.js" defer></script>
+    <script src="/static/demo.js" defer></script>
   </body>
 </html>

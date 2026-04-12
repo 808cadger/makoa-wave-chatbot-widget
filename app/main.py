@@ -18,6 +18,7 @@ SYSTEM_PROMPT = (
     "IG: instagram.com/[handle]. "
     "Reply 100% in user's lang, short 1-2 sentences, end w/ question."
 )
+DEMO_MODE = os.getenv("DEMO_MODE", "").lower() in {"1", "true", "yes", "on"}
 
 
 logging.basicConfig(
@@ -61,6 +62,39 @@ class ChatResponse(BaseModel):
     reply: str
 
 
+def _detect_demo_language(text: str) -> str:
+    lowered = text.lower()
+    if any(token in text for token in ("¿", "mañana", "reserva", "precio", "hola", "disponible")):
+        return "es"
+    if any(token in text for token in ("予約", "こんにちは", "ツアー", "空き", "明日")):
+        return "ja"
+    if any(token in text for token in ("aloha", "book", "price", "available", "tomorrow", "snorkel")) or lowered.isascii():
+        return "en"
+    return "en"
+
+
+def _build_demo_reply(message: str, context: str) -> str:
+    language = _detect_demo_language(message)
+    business_name = "Makoa~Wave"
+    if "Business name:" in context:
+        business_name = context.split("Business name:", 1)[1].splitlines()[0].strip() or business_name
+
+    if language == "es":
+        return (
+            f"Soy {business_name}, listo para responder en varios idiomas y ayudar con reservas, precios y seguimiento. "
+            "Para el demo ya puedo atender clientes y pasar a una cotizacion rapida; quieres probar una reserva?"
+        )
+    if language == "ja":
+        return (
+            f"{business_name}の多言語AIデモです。予約案内、料金案内、よくある質問対応を短く自然に返せます。"
+            "次は予約問い合わせの例で試しますか？"
+        )
+    return (
+        f"This is the {business_name} MVP demo, ready to answer in the visitor's language and handle booking-style support. "
+        "Want to test a pricing or reservation question next?"
+    )
+
+
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     started_at = perf_counter()
@@ -97,6 +131,7 @@ async def health() -> dict[str, str | bool]:
     return {
         "status": "ok",
         "openai_configured": bool(os.getenv("OPENAI_API_KEY")),
+        "demo_mode": DEMO_MODE,
     }
 
 
@@ -117,7 +152,8 @@ def _extract_reply_content(response) -> str:
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(payload: ChatRequest) -> ChatResponse:
-    if not os.getenv("OPENAI_API_KEY"):
+    has_openai_key = bool(os.getenv("OPENAI_API_KEY"))
+    if not has_openai_key and not DEMO_MODE:
         logger.error("OPENAI_API_KEY is not configured")
         raise HTTPException(status_code=500, detail="Server is not configured")
 
@@ -135,6 +171,10 @@ async def chat(payload: ChatRequest) -> ChatResponse:
             }
         )
     messages.append({"role": "user", "content": user_input})
+
+    if not has_openai_key and DEMO_MODE:
+        logger.info("Returning demo-mode reply")
+        return ChatResponse(reply=_build_demo_reply(user_input, context))
 
     try:
         logger.info("Submitting chat completion request")
