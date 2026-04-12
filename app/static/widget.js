@@ -4,6 +4,7 @@
   const title = config.title || "Chat with Makoa~Wave";
   const placeholder = config.placeholder || "Type your message...";
   const context = config.context || "";
+  const launcherLabel = config.launcherLabel || "Open chat";
 
   const style = document.createElement("style");
   style.textContent = `
@@ -94,6 +95,16 @@
       font: 600 14px/1 system-ui, sans-serif;
       cursor: pointer;
     }
+    .mw-send[disabled],
+    .mw-input[disabled] {
+      opacity: 0.7;
+      cursor: wait;
+    }
+    .mw-status {
+      padding: 0 16px 12px;
+      font-size: 12px;
+      color: #4e6b69;
+    }
   `;
   document.head.appendChild(style);
 
@@ -101,24 +112,52 @@
   launcher.className = "mw-launcher";
   launcher.type = "button";
   launcher.textContent = "Chat";
+  launcher.setAttribute("aria-label", launcherLabel);
+  launcher.setAttribute("aria-expanded", "false");
+  launcher.setAttribute("aria-controls", "mw-panel");
 
   const panel = document.createElement("section");
   panel.className = "mw-panel";
-  panel.innerHTML = `
-    <div class="mw-header">${title}</div>
-    <div class="mw-messages" aria-live="polite"></div>
-    <form class="mw-form">
-      <input class="mw-input" type="text" placeholder="${placeholder}" />
-      <button class="mw-send" type="submit">Send</button>
-    </form>
-  `;
+  panel.id = "mw-panel";
+  panel.setAttribute("aria-label", title);
+  panel.setAttribute("aria-hidden", "true");
+
+  const header = document.createElement("div");
+  header.className = "mw-header";
+  header.textContent = title;
+
+  const messages = document.createElement("div");
+  messages.className = "mw-messages";
+  messages.setAttribute("aria-live", "polite");
+
+  const form = document.createElement("form");
+  form.className = "mw-form";
+
+  const input = document.createElement("input");
+  input.className = "mw-input";
+  input.type = "text";
+  input.placeholder = placeholder;
+  input.setAttribute("aria-label", "Message");
+  input.maxLength = 4000;
+
+  const send = document.createElement("button");
+  send.className = "mw-send";
+  send.type = "submit";
+  send.textContent = "Send";
+
+  const status = document.createElement("div");
+  status.className = "mw-status";
+  status.textContent = "";
+
+  form.appendChild(input);
+  form.appendChild(send);
+  panel.appendChild(header);
+  panel.appendChild(messages);
+  panel.appendChild(form);
+  panel.appendChild(status);
 
   document.body.appendChild(launcher);
   document.body.appendChild(panel);
-
-  const messages = panel.querySelector(".mw-messages");
-  const form = panel.querySelector(".mw-form");
-  const input = panel.querySelector(".mw-input");
 
   function addMessage(text, role) {
     const node = document.createElement("div");
@@ -130,10 +169,27 @@
 
   launcher.addEventListener("click", function () {
     panel.classList.toggle("open");
-    if (panel.classList.contains("open")) {
+    const isOpen = panel.classList.contains("open");
+    launcher.setAttribute("aria-expanded", String(isOpen));
+    panel.setAttribute("aria-hidden", String(!isOpen));
+    if (isOpen) {
       input.focus();
     }
   });
+
+  function setPendingState(isPending) {
+    input.disabled = isPending;
+    send.disabled = isPending;
+    status.textContent = isPending ? "Sending..." : "";
+  }
+
+  async function parseResponse(response) {
+    const contentType = response.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      return response.json();
+    }
+    return { detail: await response.text() };
+  }
 
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -142,7 +198,7 @@
 
     addMessage(message, "user");
     input.value = "";
-    input.disabled = true;
+    setPendingState(true);
 
     try {
       const response = await fetch(`${apiBase}/chat`, {
@@ -150,7 +206,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, context }),
       });
-      const data = await response.json();
+      const data = await parseResponse(response);
       if (!response.ok) {
         throw new Error(data.detail || "Request failed");
       }
@@ -159,7 +215,7 @@
       addMessage("Sorry, the chat is temporarily unavailable. Can you try again?", "assistant");
       console.error("Makoa~Wave widget error:", error);
     } finally {
-      input.disabled = false;
+      setPendingState(false);
       input.focus();
     }
   });
