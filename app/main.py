@@ -46,11 +46,15 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
-client = AsyncOpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    timeout=30.0,
-    max_retries=2,
-)
+def _get_openai_client() -> AsyncOpenAI:
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="Server is not configured")
+    return AsyncOpenAI(
+        api_key=api_key,
+        timeout=30.0,
+        max_retries=2,
+    )
 
 
 class ChatRequest(BaseModel):
@@ -178,7 +182,7 @@ async def chat(payload: ChatRequest) -> ChatResponse:
 
     try:
         logger.info("Submitting chat completion request")
-        response = await client.chat.completions.create(
+        response = await _get_openai_client().chat.completions.create(
             model="gpt-4o-mini",
             messages=messages,
             temperature=0.4,

@@ -1,0 +1,5 @@
+.git
+.venv
+__pycache__/
+*.pyc
+makoa-wave-chatbot-widget-release.zip

@@ -24,12 +24,23 @@ DEMO_MODE=false
 ## Local run
 
 ```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 export OPENAI_API_KEY=your_openai_api_key_here
 uvicorn app.main:app --reload --port 8000
 ```
 
 Open `http://localhost:8000`.
+
+Use Python `3.12` or `3.13` for local and hosted builds. Python `3.14` can force a source build of `pydantic-core` on some machines.
+
+## Docker run
+
+```bash
+docker build -t makoa-wave-chatbot-widget .
+docker run --rm -p 8000:8000 -e DEMO_MODE=true makoa-wave-chatbot-widget
+```
 
 ## Curl test
 
