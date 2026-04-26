@@ -1,5 +1,36 @@
 # Makoa~Wave Chatbot Widget
 
+<!-- INSTALL-START -->
+## Install and run
+
+These instructions install and run `makoa-wave-chatbot-widget` from a fresh clone.
+
+### Clone
+```bash
+git clone https://github.com/808cadger/makoa-wave-chatbot-widget.git
+cd makoa-wave-chatbot-widget
+```
+
+### Python/API service
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### Notes
+- Create any required `.env` file from `.env.example` before starting backend services.
+
+### AI/API setup
+- If the app has AI features, add the required provider key in the app settings or local `.env` file.
+- Browser-only apps store user-provided API keys on the local device unless a backend endpoint is configured.
+
+### License
+- Apache License 2.0. See [`LICENSE`](./LICENSE).
+<!-- INSTALL-END -->
+
+
 Deployable FastAPI MVP for a multilingual customer-support widget. It serves a live demo page, an embeddable frontend widget, and a `POST /chat` endpoint backed by `gpt-4o-mini`.
 
 ## What is included
