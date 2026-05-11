@@ -1,11 +1,35 @@
-# Makoa~Wave Chatbot Widget
+# Makoa Wave Chatbot Widget
+
+[![Release](https://img.shields.io/github/v/release/808cadger/makoa-wave-chatbot-widget?include_prereleases&label=release)](https://github.com/808cadger/makoa-wave-chatbot-widget/releases)
+[![Last commit](https://img.shields.io/github/last-commit/808cadger/makoa-wave-chatbot-widget)](https://github.com/808cadger/makoa-wave-chatbot-widget/commits)
+[![License](https://img.shields.io/github/license/808cadger/makoa-wave-chatbot-widget)](https://github.com/808cadger/makoa-wave-chatbot-widget/blob/HEAD/LICENSE)
+![Platforms](https://img.shields.io/badge/platform-API%20service%2C%20Embeddable%20web%20widget-2563eb)
+
+Deployable FastAPI chatbot widget with embeddable frontend and multilingual support hooks.
+
+## Project Snapshot
+
+| Area | Details |
+|------|---------|
+| Primary use case | Deployable FastAPI chatbot widget with embeddable frontend and multilingual support hooks. |
+| Platforms | API service, Embeddable web widget |
+| Core stack | Python, FastAPI, OpenAI API, JavaScript widget |
+| Review first | `app` |
 
 ## Download Links
 
-- **iOS / iPhone:** Open the PWA in Safari: [Makoa Wave Chatbot Widget iOS install](https://808cadger.github.io/makoa-wave-chatbot-widget/) and choose **Share -> Add to Home Screen**.
-- **Android:** Download the latest APK from GitHub Releases: [Makoa Wave Chatbot Widget Android releases](https://github.com/808cadger/makoa-wave-chatbot-widget/releases/latest).
-- **Source download:** [Download the GitHub source ZIP](https://github.com/808cadger/makoa-wave-chatbot-widget/archive/refs/heads/main.zip).
+| Platform | Link |
+|----------|------|
+| iOS / iPhone | [Open the PWA in Safari](https://808cadger.github.io/makoa-wave-chatbot-widget/) and choose **Share -> Add to Home Screen** |
+| Android | [Download the latest APK from GitHub Releases](https://github.com/808cadger/makoa-wave-chatbot-widget/releases/latest) |
+| Source | [Download the GitHub source ZIP](https://github.com/808cadger/makoa-wave-chatbot-widget/archive/refs/heads/main.zip) |
+| Repository | [View on GitHub](https://github.com/808cadger/makoa-wave-chatbot-widget) |
 
+## Why This Repo Is Worth Reviewing
+
+- Small, reviewable backend with a live demo endpoint.
+- Embeddable widget pattern is easy to integrate into other apps.
+- API contract is simple enough for quick deployment and testing.
 
 <!-- INSTALL-START -->
 ## Install and run
