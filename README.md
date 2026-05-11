@@ -1,5 +1,12 @@
 # Makoa~Wave Chatbot Widget
 
+## Download Links
+
+- **iOS / iPhone:** Open the PWA in Safari: [Makoa Wave Chatbot Widget iOS install](https://808cadger.github.io/makoa-wave-chatbot-widget/) and choose **Share -> Add to Home Screen**.
+- **Android:** Download the latest APK from GitHub Releases: [Makoa Wave Chatbot Widget Android releases](https://github.com/808cadger/makoa-wave-chatbot-widget/releases/latest).
+- **Source download:** [Download the GitHub source ZIP](https://github.com/808cadger/makoa-wave-chatbot-widget/archive/refs/heads/main.zip).
+
+
 <!-- INSTALL-START -->
 ## Install and run
 
